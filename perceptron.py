@@ -21,19 +21,23 @@ class perceptron():
            error_count = 0
            epoch +=1
            for (X,y) in zip(self.X, self.y):
-              error_count += self.train_observation(X,y.error_count)
+              error_count += self.train_observation(X,y,error_count)
               if error_count == 0:
-                 print("training successful")
-                 break
+                  print("training successful") 
+		  break
               if epcoh >= self.max_epochs:
-                 print("reached maximum epochs, no perfect prediction")
-                 break
+                  print("reached maximum epochs, no perfect prediction")
+                  break
 
     def train_observation(self,X,y,error_count):
        ''' '''
        result = np.dot(X, self.weights) > self.threshold
        error = y - result
-     
+       if error != 0:
+           error_count +=1
+           for index, value in enumerate(X):
+               self.weights[index] += self.learning_rate *error * value
+       return error_count     
 
 
     def predict(self,X):
